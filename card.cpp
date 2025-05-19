@@ -1,4 +1,5 @@
 #include "card.h"
+#include "config.h"
 
 // constructor without parameters
 Card::Card() {}
@@ -26,10 +27,14 @@ void Card::SetCardPosition(sf::Vector2f pos)
     this->m_card.setPosition(pos);
 }
 
-// uses the texture from the configuration file (not finished)
+// uses the texture from the configuration file
 void Card::DrawTo(sf::RenderWindow& window)
 {
     string hash = this->_GetCardHash();                         // gets the hash
-    this->m_card.setTexture(config.get_texture(hash));          // sets the texture
+    this->m_card.setTexture(config.GetTexture(hash));          // sets the texture
     window.draw(this->m_card);                                  // draws the sprite
+}
+void Card::SetColor(sf::Color color)
+{
+    m_card.setColor(color);
 }
