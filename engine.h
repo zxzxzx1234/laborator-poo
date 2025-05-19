@@ -13,6 +13,7 @@
 #include "dealer.h"
 #include "timer.h"
 #include "card_effect.h"
+#include "game_stats.h"
 
 using namespace std;
 
@@ -35,6 +36,7 @@ private:
     Timer* m_heap_timer;  // timer on heap
     Timer m_stack_timer;  // timer on stack
     sf::Text m_timer_text;
+    GameStats m_stats;
 
     // Game state
     bool m_entered_bet;
