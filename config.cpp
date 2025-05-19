@@ -103,7 +103,7 @@ void Config::DrawConstants(sf::RenderWindow& window, bool exclude)
     sf::Font font = this->GetFont(ARIAL);
     sf::Text bet_input_title;
     bet_input_title.setFont(font);
-    bet_input_title.setString("Enter your bet\n(Press Enter)");
+    bet_input_title.setString("Enter your bet\n(Press Enter)\nUP to start");
     bet_input_title.setCharacterSize(20);
     bet_input_title.setPosition({ 1060, 325 });
     bet_input_title.setFillColor(sf::Color::Red);
