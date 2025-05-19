@@ -69,6 +69,7 @@ void Engine::Display()
     m_timer_text.setPosition({ 10, 10 });
     m_window.draw(m_timer_text);
     std::vector<IGameObject*> game_objects;
+    m_header.DrawTo(m_window, sf::Color(255, 215, 0)); 
 
 }
 
@@ -270,8 +271,11 @@ void Engine::_WinLogicHelper(int player_points, int dealer_points)
     {
         m_header.SetHeader(WIN_MESSAGE);
         m_player.SetBet(2 * m_bet, false);
-        m_bet_board.SetHeader("$" + to_string(m_player.GetBet()));
-        cout << "now user has: " << m_player.GetBet() << endl;
+        std::ostringstream ss;
+        ss << m_player.GetBet();
+        m_bet_board.SetHeader(ss.str());
+        m_stats.wins++;
+        std::cout << m_stats << std::endl;
         if (m_player.GetBet() >= 10000) m_end = true;
         return;
     }
@@ -280,20 +284,27 @@ void Engine::_WinLogicHelper(int player_points, int dealer_points)
     {
         m_header.SetHeader(TIE_MESSAGE);
         m_player.SetBet(m_bet, false);
-        m_bet_board.SetHeader("$" + to_string(m_player.GetBet()));
-        cout << "now user has: " << m_player.GetBet() << endl;
+        std::ostringstream ss;
+        ss << m_player.GetBet();
+        m_bet_board.SetHeader(ss.str());
+        m_stats.ties++; 
+        std::cout << m_stats << std::endl;
         return;
     }
 
     if (win_code == LOSE)
     {
         m_header.SetHeader(LOSE_MESSAGE);
-        m_bet_board.SetHeader("$" + to_string(m_player.GetBet()));
-        cout << "now user has: " << m_player.GetBet() << endl;
+        std::ostringstream ss;
+        ss << m_player.GetBet();
+        m_bet_board.SetHeader(ss.str());
+        m_stats.losses++;
+        std::cout << m_stats << std::endl;
         if (m_player.GetBet() == 0) m_end = true;
         return;
     }
 }
+
 
 // Positions and draws player and dealer cards on screen
 void Engine::_SetCardPosHelper()
