@@ -29,8 +29,15 @@ void Header::SetFont(sf::Font& font)
 // Draw header background and text
 void Header::DrawTo(sf::RenderWindow& window)
 {
-    window.draw(m_header);
+    
     window.draw(m_text);
+}
+
+void Header::DrawTo(sf::RenderWindow& window, sf::Color color)
+{
+    sf::Text temp = m_text;
+    temp.setFillColor(color);
+    window.draw(temp);
 }
 
 // Update the header's text string
