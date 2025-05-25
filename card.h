@@ -13,6 +13,13 @@ private:
     int m_rank;    // Rank for the card
     string _GetCardHash();
     sf::Sprite m_card;
+    bool m_animating = false;
+    sf::Vector2f m_start_pos;
+    sf::Vector2f m_target_pos;
+    float m_animation_progress = 0.f;
+    bool m_flipping = false;
+    float m_flip_progress = 0.f;
+    bool m_flip_finished = true;
 
 public:
     Card();
@@ -22,6 +29,13 @@ public:
     void DrawTo(sf::RenderWindow& window) override; // Implement the IGameObject method
     void SetCardPosition(sf::Vector2f pos);
     void SetColor(sf::Color color);
+    void AnimateTo(sf::Vector2f target_pos);
+    bool IsAnimating() const;
+    void UpdateAnimation();
+    void StartFlip();
+    void UpdateFlip();
+    bool IsFlipping() const;
+
 };
 
 #endif
