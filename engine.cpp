@@ -21,6 +21,10 @@ void Engine::Input()
     sf::Event event;
     while (m_window.pollEvent(event))
     {
+        m_volume_slider.HandleEvent(m_window, event);
+       m_sound_manager.SetVolume(m_volume_slider.GetVolume());
+
+
         _UpdateButtonsEvent(event);
         _UpdateEndGameEvent(event);
 
@@ -48,6 +52,9 @@ void Engine::Input()
 // Updates the display (main draw loop)
 void Engine::Display()
 {
+    m_window.draw(m_background_sprite); // background
+
+
     if (m_end)
     {
         _DrawEndGame();
@@ -70,6 +77,10 @@ void Engine::Display()
     m_window.draw(m_timer_text);
     std::vector<IGameObject*> game_objects;
     m_header.DrawTo(m_window, sf::Color(255, 215, 0)); 
+    m_volume_slider.DrawTo(m_window);
+    float t = m_lights_clock.getElapsedTime().asSeconds();
+    VegasLights::Update(t);
+    VegasLights::Draw(m_window);
 
 }
 
@@ -129,6 +140,10 @@ void Engine::_Init()
     m_dealer = Dealer();
     m_heap_timer = new Timer();   // timer on heap
     m_stack_timer = Timer();      // timer on stack
+    m_background_sprite.setTexture(config.GetTexture("background"));
+
+    m_sound_manager.PlayBackground();
+    VegasLights::Init();
 
 }
 
@@ -139,9 +154,9 @@ void Engine::_UpdateBetEvent()
     int bet = parser.ToInt();
     if (bet == -1) return;
 
-    string bet_str = m_bet_board.GetHeader();
-    int original_bet = stoi(bet_str.substr(1));
+    int original_bet = m_player.GetBet();
     if (bet > original_bet) return;
+
 
     m_player_cards.clear();
     m_dealer_cards.clear();
@@ -157,6 +172,8 @@ void Engine::_UpdateBetEvent()
     m_player.SetBet(m_bet, true);
     m_bet_board.SetHeader("$" + to_string(m_player.GetBet()));
     cout << "Bet: " << bet << endl;
+
+
 }
 
 // Handles button events: HIT, STAND, ANOTHER_GAME
@@ -168,12 +185,15 @@ void Engine::_UpdateButtonsEvent(sf::Event& event)
 
     if (action == HIT && m_player_cards.size() < MAX_CARDS)
     {
+        m_sound_manager.PlayHit();
         std::cout << "hit" << std::endl;
         GameLogger logger("Gameplay");
         logger.Log("Player chose HIT.");
 
         Card c = m_card_deck.DrawCard();
+        c.StartFlip();
         m_player_cards.push_back(c);
+
 
        
         if (!m_player_cards.empty()) {
@@ -189,6 +209,7 @@ void Engine::_UpdateButtonsEvent(sf::Event& event)
 
     if (action == STAND)
     {
+        m_sound_manager.PlayStand();
         cout << "stand" << endl;
         GameLogger logger("Gameplay");
         logger.Log("Player chose STAND.");
@@ -199,7 +220,9 @@ void Engine::_UpdateButtonsEvent(sf::Event& event)
         dealer_points = m_dealer.DrawCardAI(m_dealer_cards, m_card_deck);
 
         for (int i = 2; i < m_dealer_cards.size(); ++i)
-            m_dealer_cards[i].DrawTo(m_window);
+            m_dealer_cards[i].DrawTo(m_window); 
+
+
 
         cout << "player points: " << player_points << endl;
         cout << "dealer points: " << dealer_points << endl;
@@ -269,6 +292,7 @@ void Engine::_WinLogicHelper(int player_points, int dealer_points)
 
     if (win_code == WIN)
     {
+        m_sound_manager.PlayWin();
         m_header.SetHeader(WIN_MESSAGE);
         m_player.SetBet(2 * m_bet, false);
         std::ostringstream ss;
@@ -294,6 +318,7 @@ void Engine::_WinLogicHelper(int player_points, int dealer_points)
 
     if (win_code == LOSE)
     {
+        m_sound_manager.PlayLose();
         m_header.SetHeader(LOSE_MESSAGE);
         std::ostringstream ss;
         ss << m_player.GetBet();
@@ -309,15 +334,23 @@ void Engine::_WinLogicHelper(int player_points, int dealer_points)
 // Positions and draws player and dealer cards on screen
 void Engine::_SetCardPosHelper()
 {
-    for (int i = 0; i < m_player_cards.size(); ++i)
+    for (size_t i = 0; i < m_player_cards.size(); ++i)
     {
-        m_player_cards[i].SetCardPosition({ float(850 - 180 * i), 375 });
+        if (!m_player_cards[i].IsAnimating())
+            m_player_cards[i].AnimateTo({ float(850 - 180 * i), 375 });
+        m_player_cards[i].UpdateAnimation();
+        m_player_cards[i].UpdateFlip();
+
         m_player_cards[i].DrawTo(m_window);
     }
 
-    for (int i = 0; i < m_dealer_cards.size(); ++i)
+    for (size_t i = 0; i < m_dealer_cards.size(); ++i)
     {
-        m_dealer_cards[i].SetCardPosition({ float(850 - 180 * i), 25 });
+        if (!m_dealer_cards[i].IsAnimating())
+            m_dealer_cards[i].AnimateTo({ float(850 - 180 * i), 25 });
+        m_dealer_cards[i].UpdateAnimation();
+        m_dealer_cards[i].UpdateFlip();
         m_dealer_cards[i].DrawTo(m_window);
     }
 }
+
