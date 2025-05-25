@@ -32,6 +32,9 @@ public:
 
     // Draws the header (rectangle + text) to the window
     void DrawTo(sf::RenderWindow& window);
+    // Overload
+    void DrawTo(sf::RenderWindow& window, sf::Color color);
+
 };
 
 #endif
