@@ -40,6 +40,7 @@ sf::Font& Config::GetFont(int index)
     shared_ptr<sf::Font> font = this->_GetFont(index);
     assert(font != nullptr && "Attempted to access a non-existent font.");
     return *font;
+
 }
 
 void Config::_SetTexture()
@@ -105,7 +106,7 @@ void Config::DrawConstants(sf::RenderWindow& window, bool exclude)
     bet_input_title.setFont(font);
     bet_input_title.setString("Enter your bet\n(Press Enter)\nUP to start");
     bet_input_title.setCharacterSize(20);
-    bet_input_title.setPosition({ 1060, 325 });
+    bet_input_title.setPosition({ 1150, 325 });
     bet_input_title.setFillColor(sf::Color::Red);
     window.draw(bet_input_title);
 
@@ -114,13 +115,13 @@ void Config::DrawConstants(sf::RenderWindow& window, bool exclude)
     for (int i = 0; i < 4; ++i)
     {
         sf::Sprite sprite(this->GetTexture(bet));
-        sprite.setPosition({ 1100, float(10 + 60 * i) });
+        sprite.setPosition({ 1225, float(10 + 60 * i) });
         bet_sprites.push_back(sprite);
         bet += "0";
     }
 
     sf::Sprite max_bet(this->GetTexture("max"));
-    max_bet.setPosition({ 1100, 250 });
+    max_bet.setPosition({ 1225, 250 });
     bet_sprites.push_back(max_bet);
 
     if (exclude)
@@ -153,4 +154,9 @@ void Config::_LoadTextureHelper()
     p = make_shared<sf::Texture>();
     p->loadFromFile("assets/win.png");
     this->m_texture_map["win"] = p;
+
+    auto bg_ptr = std::make_shared<sf::Texture>();
+    bg_ptr->loadFromFile("assets/background.jpg");
+    this->m_texture_map["background"] = bg_ptr;
+
 }
