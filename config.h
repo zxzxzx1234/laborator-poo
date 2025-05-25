@@ -1,10 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
+#define FANCY 2
 
 #include "system.h"
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
-
 using namespace std;
 
 class Config
