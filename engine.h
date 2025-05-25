@@ -14,7 +14,9 @@
 #include "timer.h"
 #include "card_effect.h"
 #include "game_stats.h"
-
+#include "sound_manager.h"
+#include "volume_slider.h"
+#include "vegas_lights.h"
 using namespace std;
 
 class Engine
@@ -59,6 +61,15 @@ private:
     // Game logic
     void _SetCardPosHelper();
     void _WinLogicHelper(int player_points, int dealer_points);
+
+    //background
+    sf::Sprite m_background_sprite;
+
+    //audio
+    SoundManager m_sound_manager;
+    VolumeSlider m_volume_slider;
+
+    sf::Clock m_lights_clock;
 
 public:
     // Constructor / Destructor
