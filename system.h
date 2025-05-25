@@ -7,6 +7,7 @@ enum FONTS
 {
     // ADD MORE FONTS HERE
     ARIAL = 0,
+    ORBITRON = 1,
 };
 
 enum ACTION_CODE
@@ -35,8 +36,8 @@ enum WIN_OR_LOSE
 
 // windows
 // ADD WINDOWS CONFIG VARIABLE HERE
-const int WINDOW_HEIGHT = 650;
-const int WINDOW_WIDTH = 1200;
+const int WINDOW_HEIGHT = 720;
+const int WINDOW_WIDTH = 1280;
 const int INPUT_BOX_FONT_SIZE = 24;
 const int HEADER_FONT_SIZE = 35;
 const int CHAR_LIMIT = 5;
@@ -59,11 +60,11 @@ const string TIE_MESSAGE = "It's a Tie! Play Again?";
 const string BROKE_MESSAGE = "You lost all of your bet!";
 
 const sf::Vector2f INPUT_BOX_SIZE = sf::Vector2f(75, 35);
-const sf::Vector2f INPUT_BOX_POS = sf::Vector2f(1100, 400);
+const sf::Vector2f INPUT_BOX_POS = sf::Vector2f(1175, 400);
 const sf::Vector2f HEADER_SIZE = sf::Vector2f(400, 50);
 const sf::Vector2f HEADER_POS = sf::Vector2f(10, 300);
 
 const sf::Vector2f BET_BOARD_SIZE = sf::Vector2f(75, 35);
-const sf::Vector2f BET_BOARD_POS = sf::Vector2f(1100, 450);
+const sf::Vector2f BET_BOARD_POS = sf::Vector2f(1175, 450);
 
 #endif
