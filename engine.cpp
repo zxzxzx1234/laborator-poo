@@ -235,7 +235,7 @@ void Engine::_UpdateButtonsEvent(sf::Event& event)
     {
         m_player_cards.clear();
         m_dealer_cards.clear();
-        m_player.SetBet(m_bet, false);
+       
         m_bet_board.SetHeader("$" + to_string(m_player.GetBet()));
         m_entered_bet = false;
         m_header.SetHeader(WELCOME_MESSAGE);
